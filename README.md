@@ -1,1 +1,51 @@
+# Logging Utility
+A wrapper around [winston](https://www.npmjs.com/package/winston) that helps setup logging.
+Some features include:
+* Memory info
+* Stack traces
+* Colorized logs in dev
+* JSON logging format, making it convenient to parse and use in SumoLogic
+* Custom fields that can be added in every log message
+* All other features that [winston](https://www.npmjs.com/package/winston) has like profiling
 
+Some features that are coming in the future:
+* Optional Sentry transport for errors
+* Utility that makes scrubbing sensitive fields easier
+
+# Usage
+```ts
+/// server.ts
+import log, { GTLogger } from '@goodtimeio/node-logger';
+
+GTLogger.init({
+    environment: 'prod',
+    name: 'test',
+    additionalInfo: () => ({
+        requestId: cls.getValue('requestId'),
+        ip: cls.getIP('ip'),
+        dynoId: global.DYNO_ID,
+        workerId: config.worker.id,
+    });
+});
+
+// start logging
+log.info("starting server");
+```
+
+```ts
+/// any-other-file-in-projec.ts
+import log from '@goodtimeio/node-logger';
+
+log.error("error");
+log.warn("warning ");
+log.info("informational");
+log.verbose("verbose");
+log.debug("debug");
+log.silly("silly");
+```
+
+# TODO: Screenshots of logs in dev
+
+# TODO: Screenshot of logs being queried in SumoLogic
+
+# TODO: Testcases
