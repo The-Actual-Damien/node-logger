@@ -1,5 +1,6 @@
 # Logging Utility
 A wrapper around [winston](https://www.npmjs.com/package/winston) that helps setup logging.
+Also an effort to standardize logging format across projects.
 Some features include:
 * Memory info
 * Stack traces
@@ -33,7 +34,7 @@ log.info("starting server");
 ```
 
 ```ts
-/// any-other-file-in-projec.ts
+/// any-other-file-in-project.ts
 import log from '@goodtimeio/node-logger';
 
 log.error("error");
@@ -44,7 +45,8 @@ log.debug("debug");
 log.silly("silly");
 ```
 
-# TODO: Screenshots of logs in dev
+# Screenshots of logs in dev
+![image](https://user-images.githubusercontent.com/18729755/83687116-ef8c5500-a5b0-11ea-8482-6920e6de0cf5.png)
 
 # TODO: Screenshot of logs being queried in SumoLogic
 
