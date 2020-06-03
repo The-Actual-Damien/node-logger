@@ -1,0 +1,18 @@
+# [1.1.0](https://github.com/GoodTimeio/goodtime-node-package-template/compare/v1.0.0...v1.1.0) (2020-06-02)
+
+
+### Features
+
+* add readme ([d700cef](https://github.com/GoodTimeio/goodtime-node-package-template/commit/d700cef5bac094a12051fbaa8dae8e18dac9ddc2))
+
+# 1.0.0 (2020-06-02)
+
+
+### Bug Fixes
+
+* add empty test file ([0097f03](https://github.com/GoodTimeio/goodtime-node-package-template/commit/0097f03535b5a78f5e13e5cdb7adcf881a597bef))
+
+
+### Features
+
+* porting build config from pushkin ([a396bbc](https://github.com/GoodTimeio/goodtime-node-package-template/commit/a396bbc2ab60dacfa49fdbcf1c77410c7fe55a79))

@@ -1,0 +1,42 @@
+name: build
+
+on:
+    push:
+        branches:
+            - master
+        # Sequence of patterns matched against refs/heads
+    pull_request:
+        branches:
+            - master
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 14
+            - run: npm ci
+            - run: npm test
+            #- run: npx codecov -f coverage/*.json
+            #  env:
+            #      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+    release:
+        if: github.event_name == 'push'
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 14
+                  registry-url: https://npm.pkg.github.com/
+                  scope: '@goodtimeio'
+            - run: npm ci
+            - run: npm run build:ci
+            - run: npm run semantic-release
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,51 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "prettier/@typescript-eslint",
+        "plugin:prettier/recommended",
+        "plugin:promise/recommended"
+    ],
+    "plugins": ["no-only-tests", "sort-imports-es6-autofix", "promise", "prettier", "@typescript-eslint"],
+    "parserOptions": {
+        "ecmaVersion": 2020,
+        "sourceType": "module"
+    },
+    "rules": {
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "warn",
+        "@typescript-eslint/no-explicit-any": "error",
+        "@typescript-eslint/no-inferrable-types": [
+            "warn",
+            {
+                "ignoreParameters": true
+            }
+        ],
+        "@typescript-eslint/no-unused-vars": "warn",
+        "@typescript-eslint/no-empty-function": [
+            "error",
+            { "allow": ["private-constructors", "protected-constructors"] }
+        ],
+        "constructor-super": "warn",
+        "eqeqeq": "error",
+        "no-await-in-loop": "warn",
+        "no-eq-null": "warn",
+        "no-extra-boolean-cast": "warn",
+        "no-fallthrough": "warn",
+        "no-implicit-coercion": "warn",
+        "no-only-tests/no-only-tests": "error",
+        "no-throw-literal": "error",
+        "no-undef-init": "warn",
+        "no-unneeded-ternary": "warn",
+        "no-unsafe-finally": "error",
+        "prefer-const": "error",
+        "prefer-object-spread": "error",
+        "prefer-numeric-literals": "error",
+        "prefer-promise-reject-errors": "error",
+        "prefer-template": "warn",
+        "prettier/prettier": "warn",
+        "quotes": ["warn", "single", { "avoidEscape": true }],
+        "semi": ["error", "always"],
+        "sort-imports-es6-autofix/sort-imports-es6": "warn"
+    }
+}
