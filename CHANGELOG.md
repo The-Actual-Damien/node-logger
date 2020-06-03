@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/GoodTimeio/node-logger/compare/v1.0.0...v1.0.1) (2020-06-03)
+
+
+### Bug Fixes
+
+* package name and description ([c3420fa](https://github.com/GoodTimeio/node-logger/commit/c3420fa6ac8e9dc09bf2e718be6d0265aa933037))
+
 # 1.0.0 (2020-06-03)
 
 
