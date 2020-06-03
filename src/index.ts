@@ -65,7 +65,7 @@ function getLoggerOptions(config?: Config): winston.LoggerOptions {
         format: winston.format.combine(...formats),
         // In prod, we use a Heroku console drain, so we need to output to console.
         // In dev, we output to console for convenience.
-        transports: [new winston.transports.Console()],
+        transports: [new winston.transports.Console({ level: 'debug' })],
         ...config,
     };
     return options;
