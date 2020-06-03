@@ -48,6 +48,8 @@ log.silly("silly");
 # Screenshots of logs in dev
 ![image](https://user-images.githubusercontent.com/18729755/83687116-ef8c5500-a5b0-11ea-8482-6920e6de0cf5.png)
 
+![image](https://user-images.githubusercontent.com/18729755/83687165-fc10ad80-a5b0-11ea-8ea3-61aad20e4097.png)
+
 # TODO: Screenshot of logs being queried in SumoLogic
 
 # TODO: Testcases
