@@ -50,6 +50,7 @@ log.silly("silly");
 
 ![image](https://user-images.githubusercontent.com/18729755/83687165-fc10ad80-a5b0-11ea-8ea3-61aad20e4097.png)
 
-# TODO: Screenshot of logs being queried in SumoLogic
+# Screenshot of logs being queried in SumoLogic
+![image](https://user-images.githubusercontent.com/18729755/83688106-7857c080-a5b2-11ea-8e54-ca3aaed9c463.png)
 
 # TODO: Testcases
