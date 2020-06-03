@@ -1,3 +1,10 @@
+# 1.0.0 (2020-06-03)
+
+
+### Features
+
+* initial commit ([b84421a](https://github.com/GoodTimeio/node-logger/commit/b84421a5cca5e2b5e4248b35b4ee80a887d09905))
+
 # [1.1.0](https://github.com/GoodTimeio/goodtime-node-package-template/compare/v1.0.0...v1.1.0) (2020-06-02)
 
 
