@@ -1,6 +1,8 @@
 import * as winston from 'winston';
 import memoryFormat from './memory';
 
+import stacktrace from 'stack-trace';
+
 export interface Config extends Pick<winston.LoggerOptions, 'silent' | 'transports'> {
     /**
      * If environment is `dev`, we will prettify the output.
@@ -23,6 +25,34 @@ function getLoggerOptions(config?: Config): winston.LoggerOptions {
     const formats = [
         // Enable error logging as well as stack traces.
         winston.format.errors({ stack: true }),
+        // All errors
+        winston.format((info) => {
+            if (!info.stack && info.level === 'error') {
+                // get the current stack trace
+                const trace = stacktrace.parse(new Error());
+
+                // get rid of all function calls inside the logging lib from the stack trace
+                const filepaths = trace.map((t) => t.getFileName());
+                const index = filepaths.findIndex((path) => !path.includes('node-logger'));
+                if (index !== -1) {
+                    info.stack = trace.slice(index);
+                } else {
+                    info.stack = trace;
+                }
+
+                info.stack = (info.stack as stacktrace.StackFrame[]).reduce((accum, frame) => {
+                    let callerName = frame.getFunctionName() || '';
+                    if (frame.getTypeName()) {
+                        callerName += frame.getTypeName() || '';
+                    }
+                    if (frame.getMethodName()) {
+                        callerName += frame.getTypeName() || '';
+                    }
+                    return `${accum}    at ${callerName}(${frame.getFileName()}:${frame.getLineNumber()}:${frame.getColumnNumber()})\n`;
+                }, 'Error\n');
+            }
+            return info;
+        })(),
         // Add memory info.
         memoryFormat(),
         // Add `additionalInfo` and `name`

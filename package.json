@@ -140,6 +140,8 @@
         ]
     },
     "dependencies": {
+        "@types/stack-trace": "0.0.29",
+        "stack-trace": "0.0.10",
         "winston": "3.2.1"
     }
 }

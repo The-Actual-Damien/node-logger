@@ -10,8 +10,11 @@ Some features include:
 * All other features that [winston](https://www.npmjs.com/package/winston) has like profiling
 
 Some features that are coming in the future:
-* Optional Sentry transport for errors
 * Compact dev logs
+    * Not adding
+* Testcases so we can make sure we aren't making removing any existing logging behavior
+    * These will come after compact dev logs and once everyone has reviewed this project
+* Optional Sentry transport for errors
 
 # Usage
 Screenshots are in a section further below.
@@ -32,6 +35,9 @@ GTLogger.init({
 
 // start logging
 log.info("starting server");
+
+// end logging
+log.end(); // wait for all logs to be written
 ```
 
 ```ts
@@ -52,6 +58,8 @@ log.info("informational", { additionalField1: "hey", additionalField2: { nesting
 log.verbose("verbose");
 log.debug("debug");
 ```
+
+## How the logs look in dev
 ![image](https://user-images.githubusercontent.com/18729755/83693883-962a2300-a5bc-11ea-9a29-baf9e6fcd788.png)
 ![image](https://user-images.githubusercontent.com/18729755/83694443-aabaeb00-a5bd-11ea-91d8-15942abe806e.png)
 
@@ -67,7 +75,7 @@ interface Person {
 };
 
 const sensitiveFields = ['ssn', 'address'];
-const redact = () => {
+const redact = (obj) => {
     const redactyl = new Redactyl({
         properties: sensitiveFields,
     });
@@ -89,12 +97,5 @@ const person = {
 log.info(redact(person))
 ```
 
-# Screenshots of logs in dev
-![image](https://user-images.githubusercontent.com/18729755/83687116-ef8c5500-a5b0-11ea-8482-6920e6de0cf5.png)
-
-![image](https://user-images.githubusercontent.com/18729755/83687165-fc10ad80-a5b0-11ea-8ea3-61aad20e4097.png)
-
 # Screenshot of logs being queried in SumoLogic
 ![image](https://user-images.githubusercontent.com/18729755/83688246-b2c15d80-a5b2-11ea-8318-47f23eba3e9e.png)
-
-# TODO: Testcases
