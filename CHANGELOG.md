@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/GoodTimeio/node-logger/compare/v1.0.1...v1.1.0) (2020-06-04)
+
+
+### Features
+
+* add a stack trace ([effbb41](https://github.com/GoodTimeio/node-logger/commit/effbb415c147f6e38ab73279270664c820db7c4b))
+
 ## [1.0.1](https://github.com/GoodTimeio/node-logger/compare/v1.0.0...v1.0.1) (2020-06-03)
 
 
