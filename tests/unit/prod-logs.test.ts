@@ -1,0 +1,150 @@
+import * as winston from 'winston';
+import { GTLogger } from '@src/index';
+import { delay } from 'tests/helpers';
+import { expect } from 'chai';
+import fs from 'fs';
+import tmp from 'tmp';
+
+describe('when logging while configuring the logger in production mode', () => {
+    it('contains error message and level', async () => {
+        const file = tmp.fileSync();
+        GTLogger.reset();
+        GTLogger.init({
+            name: 'prod-test',
+            environment: 'prod',
+            transports: [
+                new winston.transports.File({
+                    filename: file.name,
+                }),
+            ],
+        });
+        const logger = GTLogger.logger;
+        logger.info('test');
+        logger.end();
+
+        await delay(10);
+
+        const contents = fs.readFileSync(file.name);
+        const log = JSON.parse(contents.toString());
+        expect(log.level).to.eql('info');
+        expect(log.message).to.eql('test');
+        expect(log.label).to.eql('prod-test');
+        file.removeCallback();
+    });
+
+    it('adds memory info', async () => {
+        const file = tmp.fileSync();
+        GTLogger.reset();
+        GTLogger.init({
+            name: 'prod-test',
+            environment: 'prod',
+            transports: [
+                new winston.transports.File({
+                    filename: file.name,
+                }),
+            ],
+        });
+        const logger = GTLogger.logger;
+        logger.info('test, 1');
+        logger.end();
+
+        await delay(10);
+
+        const contents = fs.readFileSync(file.name);
+        const log = JSON.parse(contents.toString());
+        expect(parseInt(log?.metadata?.memory?.usedMBs, 10)).to.be.greaterThan(0);
+        expect(parseInt(log?.metadata?.memory?.freeMBs, 10)).to.be.greaterThan(0);
+        file.removeCallback();
+    });
+
+    it('prints custom fields', async () => {
+        let requestId = '1';
+
+        const file = tmp.fileSync();
+        GTLogger.reset();
+        GTLogger.init({
+            name: 'prod-test',
+            environment: 'prod',
+            transports: [
+                new winston.transports.File({
+                    filename: file.name,
+                }),
+            ],
+            additionalInfo: () => {
+                return {
+                    requestId,
+                };
+            },
+        });
+        const logger = GTLogger.logger;
+        logger.info('test, 1');
+        requestId = '2';
+        logger.info('test, 2');
+        logger.end();
+
+        await delay(10);
+
+        const contents = fs.readFileSync(file.name);
+        const lines = contents.toString().split('\n');
+        expect(lines).to.have.lengthOf(3);
+        expect(lines[2]).to.eql('');
+
+        expect(JSON.parse(lines[0])?.metadata.requestId).to.eql('1');
+        expect(JSON.parse(lines[1])?.metadata.requestId).to.eql('2');
+        file.removeCallback();
+    });
+
+    it('prints stack traces when an error is passed', async () => {
+        const file = tmp.fileSync();
+        GTLogger.reset();
+        GTLogger.init({
+            name: 'prod-test',
+            environment: 'prod',
+            transports: [
+                new winston.transports.File({
+                    filename: file.name,
+                }),
+            ],
+        });
+        const logger = GTLogger.logger;
+        logger.error(new Error('hey'));
+        logger.end();
+
+        await delay(10);
+
+        const contents = fs.readFileSync(file.name);
+        const log = JSON.parse(contents.toString());
+        expect(log.level).to.eql('error');
+        expect(log.message).to.eql('hey');
+        expect(log.stack.includes('Error: hey\n')).to.eql(true);
+        expect(log.stack.includes('/node-logger/tests/unit/prod-logs.test.ts:')).to.eql(true);
+        file.removeCallback();
+    });
+
+    it('prints stack traces everytime log.error is called, even if an error object is not passed', async () => {
+        const file = tmp.fileSync();
+        GTLogger.reset();
+        GTLogger.init({
+            name: 'prod-test',
+            environment: 'prod',
+            transports: [
+                new winston.transports.File({
+                    filename: file.name,
+                }),
+            ],
+        });
+        const logger = GTLogger.logger;
+        logger.error('not an error object');
+        logger.end();
+
+        await delay(10);
+
+        const contents = fs.readFileSync(file.name);
+        const log = JSON.parse(contents.toString());
+        expect(log.level).to.eql('error');
+        expect(log.message).to.eql('not an error object');
+        expect(log.stack.includes('Error: \n')).to.eql(true);
+        expect(log.stack.includes('/node-logger/tests/unit/prod-logs.test.ts:')).to.eql(true);
+        file.removeCallback();
+    });
+});

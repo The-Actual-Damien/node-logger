@@ -1,7 +1,8 @@
 import * as winston from 'winston';
-import memoryFormat from './memory';
-
-import stacktrace from 'stack-trace';
+import attachMemoryUsageInfo from './formats/memory';
+import attachStackTrace from './formats/stack-trace';
+// import attachMemoryUsageInfo from '@src/formats/memory';
+// import attachStackTrace from '@src/formats/stack-trace';
 
 export interface Config extends Pick<winston.LoggerOptions, 'silent' | 'transports'> {
     /**
@@ -18,44 +19,17 @@ export interface Config extends Pick<winston.LoggerOptions, 'silent' | 'transpor
      * If available, you might also want to provide the requestId, the jobIb, and/or the IP of the current
      * request here.
      */
-    additionalInfo?: () => Record<string, string>;
+    additionalInfo?: () => Record<string, string | number>;
 }
 
+// generate the winston configuration based on the config
 function getLoggerOptions(config?: Config): winston.LoggerOptions {
     const formats = [
-        // Enable error logging as well as stack traces.
+        // Enable stack traces if an Error object was logged.
         winston.format.errors({ stack: true }),
-        // All errors
-        winston.format((info) => {
-            if (!info.stack && info.level === 'error') {
-                // get the current stack trace
-                const trace = stacktrace.parse(new Error());
-
-                // get rid of all function calls inside the logging lib from the stack trace
-                const filepaths = trace.map((t) => t.getFileName());
-                const index = filepaths.findIndex((path) => !path.includes('node-logger'));
-                if (index !== -1) {
-                    info.stack = trace.slice(index);
-                } else {
-                    info.stack = trace;
-                }
-
-                info.stack = (info.stack as stacktrace.StackFrame[]).reduce((accum, frame) => {
-                    let callerName = frame.getFunctionName() || '';
-                    if (frame.getTypeName()) {
-                        callerName += frame.getTypeName() || '';
-                    }
-                    if (frame.getMethodName()) {
-                        callerName += frame.getTypeName() || '';
-                    }
-                    return `${accum}    at ${callerName}(${frame.getFileName()}:${frame.getLineNumber()}:${frame.getColumnNumber()})\n`;
-                }, 'Error\n');
-            }
-            return info;
-        })(),
-        // Add memory info.
-        memoryFormat(),
-        // Add `additionalInfo` and `name`
+        // Attach a stack trace to `log.error` calls that don't already have a stack trace.
+        attachStackTrace(),
+        // Add `additionalInfo` and `name`.
         winston.format((info) => {
             info = {
                 ...info,
@@ -69,9 +43,12 @@ function getLoggerOptions(config?: Config): winston.LoggerOptions {
             }
             return info;
         })(),
-        // Our official logging format.
-        winston.format.json(),
     ];
+
+    if (config?.environment === 'prod') {
+        // Add memory info.
+        formats.push(attachMemoryUsageInfo());
+    }
 
     if (config?.environment === 'dev') {
         // Heroku adds a timestamp to our logs in prod,
@@ -91,6 +68,9 @@ function getLoggerOptions(config?: Config): winston.LoggerOptions {
         formats.push(winston.format.colorize({ all: true }));
     }
 
+    // Our official logging format.
+    formats.push(winston.format.json());
+
     const options: winston.LoggerOptions = {
         format: winston.format.combine(...formats),
         // In prod, we use a Heroku console drain, so we need to output to console.
@@ -103,7 +83,7 @@ function getLoggerOptions(config?: Config): winston.LoggerOptions {
 
 // A singleton that manages the winston logger instance.
 export class GTLogger {
-    private static _logger: winston.Logger;
+    private static _logger?: winston.Logger;
 
     static init(config: Config): void {
         if (this._logger) {
@@ -118,6 +98,11 @@ export class GTLogger {
             this._logger = winston.createLogger(getLoggerOptions());
         }
         return this._logger;
+    }
+
+    // for tests
+    static reset(): void {
+        this._logger = undefined;
     }
 }
 
