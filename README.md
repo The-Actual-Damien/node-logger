@@ -16,6 +16,11 @@ Some features include:
 Some features that are coming in the future:
 * Optional Sentry transport for errors
 
+# Feedback
+If you have any suggestions or changes that you'd like, please open an Issue.
+The dev logging can be made very configurable.
+The prod logging can be updated as well but the change must not break current prod logging format. Otherwise, existing SumoLogic queries will stop working.
+
 # Usage
 Screenshots are in a section further below.
 ```ts
