@@ -1,12 +1,14 @@
 import * as winston from 'winston';
-import attachMemoryUsageInfo from './formats/memory';
-import attachScrubber from './formats/scrubber';
-import attachStackTrace from './formats/stack-trace';
 
-// TODO: uncomment the following lines
-// import attachMemoryUsageInfo from '@src/formats/memory';
-// import attachScrubber from '@src/formats/attachScrubber';
-// import attachStackTrace from '@src/formats/stack-trace';
+import attachMemoryUsageInfo from '@src/formats/memory';
+import attachScrubber from '@src/formats/scrubber';
+import attachStackTrace from '@src/formats/stack-trace';
+
+interface Info {
+    log: string;
+    message: string;
+    [rest: string]: unknown;
+}
 
 export interface Config extends Pick<winston.LoggerOptions, 'silent' | 'transports'> {
     /**
@@ -30,7 +32,7 @@ export interface Config extends Pick<winston.LoggerOptions, 'silent' | 'transpor
      * then scrub all sensitive fields.
      * Or you might want to scrub all the emails.
      */
-    scrubber?: (log: Record<string, unknown>) => Record<string, unknown>;
+    scrubber?: (input: Info) => Info;
 }
 
 const id = <T>(x: T): T => x;
