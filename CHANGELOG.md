@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/GoodTimeio/node-logger/compare/v1.1.0...v1.2.0) (2020-06-05)
+
+
+### Features
+
+* add a scrubber function and a property scrubber ([98eed68](https://github.com/GoodTimeio/node-logger/commit/98eed68a979a1d8d378aa9f37708c5ac5330fe7d))
+
 # [1.1.0](https://github.com/GoodTimeio/node-logger/compare/v1.0.1...v1.1.0) (2020-06-04)
 
 
