@@ -1,4 +1,5 @@
 ![build](https://github.com/GoodTimeio/node-logger/workflows/build/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/GoodTimeio/node-logger/badge.svg?branch=master&t=pmyV6b)](https://coveralls.io/github/GoodTimeio/node-logger?branch=master)
 
 # Logging Utility
 A wrapper around [winston](https://www.npmjs.com/package/winston) that helps setup logging.
