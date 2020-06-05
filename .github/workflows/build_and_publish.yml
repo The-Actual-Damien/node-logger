@@ -19,10 +19,11 @@ jobs:
                   node-version: 14
             - run: npm ci
             - run: npm test
-            #- run: npx codecov -f coverage/*.json
-            #  env:
-            #      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
+            - name: Coveralls
+              uses: coverallsapp/github-action@master
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  path-to-lcov: "./coverage/coverage-final.info"
     release:
         if: github.event_name == 'push'
         needs: build
