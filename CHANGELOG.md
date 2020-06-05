@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/GoodTimeio/node-logger/compare/v1.2.0...v1.2.1) (2020-06-05)
+
+
+### Bug Fixes
+
+* update scrubber type and imports ([a48af19](https://github.com/GoodTimeio/node-logger/commit/a48af195ce933f28b28b1f33f757dfc26a1884fe))
+
 # [1.2.0](https://github.com/GoodTimeio/node-logger/compare/v1.1.0...v1.2.0) (2020-06-05)
 
 
