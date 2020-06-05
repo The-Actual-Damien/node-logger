@@ -1,3 +1,5 @@
+![build](https://github.com/GoodTimeio/node-logger/workflows/build/badge.svg)
+
 # Logging Utility
 A wrapper around [winston](https://www.npmjs.com/package/winston) that helps setup logging.
 Also an effort to standardize logging format across projects.
