@@ -10,8 +10,8 @@ Some features include:
 * Configurable scrubbing
     * Specify a scrubber function that runs on every message about to be logged
     * Specify fields you want to be scrubbed on a per-message basis
-    * See examples below!
-* All other features that [winston](https://www.npmjs.com/package/winston) has like profiling
+    * [See examples below](https://github.com/GoodTimeio/node-logger#scrubbing-sensitive-fields)!
+* All other features that [winston](https://www.npmjs.com/package/winston) has like [profiling](https://www.npmjs.com/package/winston#profiling)
 
 Some features that are coming in the future:
 * Optional Sentry transport for errors
