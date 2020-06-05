@@ -73,12 +73,6 @@ import log, { GTLogger } from '@goodtimeio/node-logger';
 GTLogger.init({
     environment: 'prod',
     name: 'test',
-    additionalInfo: () => ({
-        requestId: cls.getValue('requestId'),
-        ip: cls.getIP('ip'),
-        dynoId: global.DYNO_ID,
-        workerId: config.worker.id,
-    }),
     scrubber: ({ level, message, ...rest }) => {
         if (rest.authorizationHeader) {
             rest.authorizationHeader = '[REDACTED]';
@@ -105,6 +99,7 @@ log.info("starting server", { authorizationHeader: 'xyz-ssn' });
 // {
 //      level: 'info',
 //      message: 'starting server informational',
+//      authorizationHeader: '[REDACTED]',
 //      ...
 // }
 ```
