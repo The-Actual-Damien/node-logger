@@ -7,13 +7,13 @@ Some features include:
 * Colorized logs in dev
 * JSON logging format, making it convenient to parse and use in SumoLogic
 * Custom fields that can be added in every log message
+* Configurable scrubbing
+    * Specify a scrubber function that runs on every message about to be logged
+    * Specify fields you want to be scrubbed on a per-message basis
+    * See examples below!
 * All other features that [winston](https://www.npmjs.com/package/winston) has like profiling
 
 Some features that are coming in the future:
-* Compact dev logs
-    * Not adding
-* Testcases so we can make sure we aren't making removing any existing logging behavior
-    * These will come after compact dev logs and once everyone has reviewed this project
 * Optional Sentry transport for errors
 
 # Usage
@@ -30,7 +30,7 @@ GTLogger.init({
         ip: cls.getIP('ip'),
         dynoId: global.DYNO_ID,
         workerId: config.worker.id,
-    });
+    }),
 });
 
 // start logging
@@ -47,55 +47,113 @@ import log from '@goodtimeio/node-logger';
 try {
     throw new Error("Divide by zero");
 } catch (err) {
-    // you can log the error object. you get the stack trace
+    // you can log the error object directly!
     log.error(err);
+    // or provide a message and then log it
+    log.error('i erred', err);
 }
 
 log.warn("warning");
 
 // log objects too
 log.info("informational", { additionalField1: "hey", additionalField2: { nesting: { some: 'more' } } });
+
+// more levels!
 log.verbose("verbose");
 log.debug("debug");
 ```
 
-## How the logs look in dev
+# Scrubbing Sensitive Fields
+
+## Approach 1: Specify scrubber function
+The scrubber function will run on every message about to logged.
+```ts
+import log, { GTLogger } from '@goodtimeio/node-logger';
+
+GTLogger.init({
+    environment: 'prod',
+    name: 'test',
+    additionalInfo: () => ({
+        requestId: cls.getValue('requestId'),
+        ip: cls.getIP('ip'),
+        dynoId: global.DYNO_ID,
+        workerId: config.worker.id,
+    }),
+    scrubber: ({ level, message, ...rest }) => {
+        if (rest.authorizationHeader) {
+            rest.authorizationHeader = '[REDACTED]';
+        }
+
+        // only do this for `log.info` messages
+        if (level === 'info') {
+            // `message` is the string you pass to `log.info`
+            // for example, if you called `log.info('test'), `message` will be set to `'test'`.
+            message += ' informational';
+        }
+        message = scrubEmails(message);
+        return {
+            level,
+            message,
+            ...rest,
+        };
+    },
+});
+
+// start logging
+log.info("starting server", { authorizationHeader: 'xyz-ssn' });
+// console output:
+// {
+//      level: 'info',
+//      message: 'starting server informational',
+//      ...
+// }
+```
+
+## Approach 2: Specify fields you want to be scrubbed
+You can also specify fields you want to be scrubbed on a per message basis.
+```ts
+const gtInterview = {
+    firstName: 'Stefano',
+    lastName: 'D\'Amico',
+    coordinator: {
+        firstName: 'Peter',
+        lastName: 'Lee',
+        email: 'peter@goodtime.io',
+    }
+    guest: {
+        phone: '123-456-7890',
+        otherField: 'xyz',
+    }
+};
+
+log.info('interview', {
+    interview: gtInterview,
+    scrub: ['firstName', 'lastName', 'email', 'phone'],
+})
+// console output:
+// {
+//    level: 'info',
+//    message: 'interview',
+//    interview: {
+//         firstName: '[REDACTED]',
+//         lastName: '[REDACTED]',
+//         coordinator: {
+//               firstName: '[REDACTED]',
+//               lastName: '[REDACTED]',
+//               email: '[REDACTED]',
+//         },
+//         guest: {
+//               phone: '[REDACTED]',
+//               other: 'xyz',
+//         },
+//    },
+//    ...
+// }
+```
+
+# How the logs look in dev
 ![image](https://user-images.githubusercontent.com/18729755/83693883-962a2300-a5bc-11ea-9a29-baf9e6fcd788.png)
 ![image](https://user-images.githubusercontent.com/18729755/83694443-aabaeb00-a5bd-11ea-91d8-15942abe806e.png)
 
-# Logging Sensitive Fields
-If you want to omit logging sensitive fields, the [redactyl](https://www.npmjs.com/package/redactyl.js) package is an option.
-The package has a type declaration file and a good selection of testcases.
-```ts
-import Redactyl from 'redactyl.js';
-
-interface Person {
-    ssn: string;
-    nested: { address: string };
-};
-
-const sensitiveFields = ['ssn', 'address'];
-const redact = (obj) => {
-    const redactyl = new Redactyl({
-        properties: sensitiveFields,
-    });
-    return redactyl.redact(obj);
-}
-
-const person = {
-    ssn: 'your ssn',
-    nested: [
-        {
-            address: 'your current address',
-        },
-        {
-            address: 'your previous address',
-        },
-    ]
-};
-
-log.info(redact(person))
-```
-
-# Screenshot of logs being queried in SumoLogic
+# Screenshot of prod logs being queried in SumoLogic
 ![image](https://user-images.githubusercontent.com/18729755/83688246-b2c15d80-a5b2-11ea-8318-47f23eba3e9e.png)

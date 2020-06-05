@@ -1,7 +1,11 @@
 import * as winston from 'winston';
 import attachMemoryUsageInfo from './formats/memory';
+import attachScrubber from './formats/scrubber';
 import attachStackTrace from './formats/stack-trace';
+
+// TODO: uncomment the following lines
 // import attachMemoryUsageInfo from '@src/formats/memory';
+// import attachScrubber from '@src/formats/attachScrubber';
 // import attachStackTrace from '@src/formats/stack-trace';
 
 export interface Config extends Pick<winston.LoggerOptions, 'silent' | 'transports'> {
@@ -19,14 +23,25 @@ export interface Config extends Pick<winston.LoggerOptions, 'silent' | 'transpor
      * If available, you might also want to provide the requestId, the jobIb, and/or the IP of the current
      * request here.
      */
-    additionalInfo?: () => Record<string, string | number>;
+    additionalInfo?: () => Record<string, unknown>;
+    /**
+     * If you'd like to run some scrubber on all logs, specify it here.
+     * For example, you might want to check to see if you're about to log a response from axios and
+     * then scrub all sensitive fields.
+     * Or you might want to scrub all the emails.
+     */
+    scrubber?: (log: Record<string, unknown>) => Record<string, unknown>;
 }
+
+const id = <T>(x: T): T => x;
 
 // generate the winston configuration based on the config
 function getLoggerOptions(config?: Config): winston.LoggerOptions {
     const formats = [
         // Enable stack traces if an Error object was logged.
         winston.format.errors({ stack: true }),
+        // Scrub sensitive fields.
+        attachScrubber(config?.scrubber || id),
         // Attach a stack trace to `log.error` calls that don't already have a stack trace.
         attachStackTrace(),
         // Add `additionalInfo` and `name`.
@@ -50,6 +65,9 @@ function getLoggerOptions(config?: Config): winston.LoggerOptions {
         formats.push(attachMemoryUsageInfo());
     }
 
+    // Our official logging format.
+    formats.push(winston.format.json());
+
     if (config?.environment === 'dev') {
         // Heroku adds a timestamp to our logs in prod,
         // but it's convenient to also have a timestamp in dev.
@@ -67,9 +85,6 @@ function getLoggerOptions(config?: Config): winston.LoggerOptions {
         // Color outputs in dev for convenience.
         formats.push(winston.format.colorize({ all: true }));
     }
-
-    // Our official logging format.
-    formats.push(winston.format.json());
 
     const options: winston.LoggerOptions = {
         format: winston.format.combine(...formats),

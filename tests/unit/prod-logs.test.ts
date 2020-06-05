@@ -147,4 +147,94 @@ describe('when logging while configuring the logger in production mode', () => {
         expect(log.stack.includes('/node-logger/tests/unit/prod-logs.test.ts:')).to.eql(true);
         file.removeCallback();
     });
+
+    it('runs the scrubber function if specified', async () => {
+        const file = tmp.fileSync();
+        GTLogger.reset();
+        GTLogger.init({
+            name: 'prod-test',
+            environment: 'prod',
+            transports: [
+                new winston.transports.File({
+                    filename: file.name,
+                }),
+            ],
+            scrubber: ({ level, message, ...rest }) => {
+                if (rest.authorizationHeader) {
+                    rest.authorizationHeader = '[REDACTED]';
+                }
+                if (level === 'info') {
+                    message += ' informational';
+                }
+                return {
+                    level,
+                    message,
+                    ...rest,
+                };
+            },
+        });
+        const logger = GTLogger.logger;
+        logger.info('test', { authorizationHeader: 'scrub me' });
+        logger.end();
+
+        await delay(10);
+
+        const contents = fs.readFileSync(file.name);
+        const log = JSON.parse(contents.toString());
+        expect(log.level).to.eql('info');
+        expect(log.message).to.eql('test informational');
+        expect(log.authorizationHeader).to.eql('[REDACTED]');
+        file.removeCallback();
+    });
+
+    it('scrubs the specified fields', async () => {
+        const file = tmp.fileSync();
+        GTLogger.reset();
+        GTLogger.init({
+            name: 'prod-test',
+            environment: 'prod',
+            transports: [
+                new winston.transports.File({
+                    filename: file.name,
+                }),
+            ],
+        });
+        const logger = GTLogger.logger;
+        const gtInterview = {
+            firstName: 'Stefano',
+            lastName: "D'Amico",
+            coordinator: {
+                firstName: 'Peter',
+                lastName: 'Lee',
+                email: 'peter@goodtime.io',
+            },
+            guest: {
+                phone: '123-456-7890',
+                otherField: 'xyz',
+            },
+        };
+        logger.info('interview', {
+            interview: gtInterview,
+            scrub: ['firstName', 'lastName', 'email', 'phone', 'guest'],
+        });
+        logger.end();
+
+        await delay(10);
+
+        const contents = fs.readFileSync(file.name);
+        const log = JSON.parse(contents.toString());
+        expect(log.level).to.eql('info');
+        expect(log.message).to.eql('interview');
+        expect(log.interview).to.eql({
+            firstName: '[REDACTED]',
+            lastName: '[REDACTED]',
+            coordinator: {
+                firstName: '[REDACTED]',
+                lastName: '[REDACTED]',
+                email: '[REDACTED]',
+            },
+            guest: '[REDACTED]',
+        });
+        file.removeCallback();
+    });
 });

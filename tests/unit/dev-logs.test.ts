@@ -24,12 +24,11 @@ describe('when logging while configuring the logger in dev mode', () => {
 
         await delay(10);
 
-        const contents = fs.readFileSync(file.name);
-        const log = JSON.parse(contents.toString());
-        expect(log.level).to.eql('\u001b[32minfo\u001b[39m');
-        expect(log.message).to.eql('\u001b[32mtest\u001b[39m');
-        expect(log.label).to.eql('dev-test');
-        expect(log.timestamp).to.not.be.undefined;
+        const contents = fs.readFileSync(file.name).toString();
+        expect(contents.includes("level: 'info'")).to.eql(true);
+        expect(contents.includes("message: 'test'")).to.eql(true);
+        expect(contents.includes("label: 'dev-test'")).to.eql(true);
+        expect(contents.includes('timestamp')).to.eql(true);
         file.removeCallback();
     });
 });
