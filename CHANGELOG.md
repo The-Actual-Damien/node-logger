@@ -1,3 +1,15 @@
+# [1.3.0](https://github.com/GoodTimeio/node-logger/compare/v1.2.2...v1.3.0) (2020-06-10)
+
+
+### Bug Fixes
+
+* track dev-logs file ([d7f1e8d](https://github.com/GoodTimeio/node-logger/commit/d7f1e8d16cdae033530244c54ba3101c399d3a56))
+
+
+### Features
+
+* dev logs more compact ([87de88b](https://github.com/GoodTimeio/node-logger/commit/87de88b9b6df0f3cd4bd85d1f04be9a97d06d4d6))
+
 ## [1.2.2](https://github.com/GoodTimeio/node-logger/compare/v1.2.1...v1.2.2) (2020-06-10)
 
 
