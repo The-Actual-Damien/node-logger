@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/GoodTimeio/node-logger/compare/v1.2.1...v1.2.2) (2020-06-10)
+
+
+### Bug Fixes
+
+* nit to cause new release ([22888e7](https://github.com/GoodTimeio/node-logger/commit/22888e7a4bc67e3ccaf2d9fc55188ceee3dcb3b8))
+
 ## [1.2.1](https://github.com/GoodTimeio/node-logger/compare/v1.2.0...v1.2.1) (2020-06-05)
 
 
