@@ -13,7 +13,7 @@ const devLogFormat = () => {
         delete obj.timestamp;
         delete obj.stack;
 
-        let output = `[${info.level}] ${info.message} - ${info.timestamp} - ${JSON.stringify(obj)}`;
+        let output = `${info.timestamp} - [${info.level}] ${info.message} | ${JSON.stringify(obj)}`;
         if (info.stack) {
             output += `\n${info.stack}`;
         }
