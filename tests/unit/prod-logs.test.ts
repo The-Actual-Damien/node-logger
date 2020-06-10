@@ -52,8 +52,8 @@ describe('when logging while configuring the logger in production mode', () => {
 
         const contents = fs.readFileSync(file.name);
         const log = JSON.parse(contents.toString());
-        expect(parseInt(log?.metadata?.memory?.usedMBs, 10)).to.be.greaterThan(0);
-        expect(parseInt(log?.metadata?.memory?.freeMBs, 10)).to.be.greaterThan(0);
+        expect(parseInt(log?.logMetadata?.memory?.usedMBs, 10)).to.be.greaterThan(0);
+        expect(parseInt(log?.logMetadata?.memory?.freeMBs, 10)).to.be.greaterThan(0);
         file.removeCallback();
     });
 
@@ -89,8 +89,8 @@ describe('when logging while configuring the logger in production mode', () => {
         expect(lines).to.have.lengthOf(3);
         expect(lines[2]).to.eql('');
 
-        expect(JSON.parse(lines[0])?.metadata.requestId).to.eql('1');
-        expect(JSON.parse(lines[1])?.metadata.requestId).to.eql('2');
+        expect(JSON.parse(lines[0])?.logMetadata.requestId).to.eql('1');
+        expect(JSON.parse(lines[1])?.logMetadata.requestId).to.eql('2');
         file.removeCallback();
     });
 

@@ -156,8 +156,7 @@ log.info('interview', {
 ```
 
 # How the logs look in dev
-![image](https://user-images.githubusercontent.com/18729755/83693883-962a2300-a5bc-11ea-9a29-baf9e6fcd788.png)
-![image](https://user-images.githubusercontent.com/18729755/83694443-aabaeb00-a5bd-11ea-91d8-15942abe806e.png)
+![image](https://user-images.githubusercontent.com/18729755/84307121-0f2bfc00-ab22-11ea-87e8-ae6f95d768da.png)
 
 # Screenshot of prod logs being queried in SumoLogic
 ![image](https://user-images.githubusercontent.com/18729755/83688246-b2c15d80-a5b2-11ea-8318-47f23eba3e9e.png)

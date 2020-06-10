@@ -1,5 +1,6 @@
 import * as winston from 'winston';
 
+import attachDevLogFormat from '@src/formats/dev-logs';
 import attachMemoryUsageInfo from '@src/formats/memory';
 import attachScrubber from '@src/formats/scrubber';
 import attachStackTrace from '@src/formats/stack-trace';
@@ -53,8 +54,8 @@ function getLoggerOptions(config?: Config): winston.LoggerOptions {
                 label: config?.name || 'unknown',
             };
             if (config?.additionalInfo) {
-                info.metadata = {
-                    ...info.metadata,
+                info.logMetadata = {
+                    ...info.logMetadata,
                     ...config.additionalInfo(),
                 };
             }
@@ -65,10 +66,10 @@ function getLoggerOptions(config?: Config): winston.LoggerOptions {
     if (config?.environment === 'prod') {
         // Add memory info.
         formats.push(attachMemoryUsageInfo());
-    }
 
-    // Our official logging format.
-    formats.push(winston.format.json());
+        // Our official logging format.
+        formats.push(winston.format.json());
+    }
 
     if (config?.environment === 'dev') {
         // Heroku adds a timestamp to our logs in prod,
@@ -83,6 +84,8 @@ function getLoggerOptions(config?: Config): winston.LoggerOptions {
         // > impact performance negatively and block the event loop.
         // [source](https://github.com/winstonjs/logform#prettyprint)
         formats.push(winston.format.prettyPrint());
+
+        formats.push(attachDevLogFormat());
 
         // Color outputs in dev for convenience.
         formats.push(winston.format.colorize({ all: true }));
@@ -123,7 +126,6 @@ export class GTLogger {
     }
 }
 
-export const init = GTLogger.init;
+export const init = GTLogger.init.bind(GTLogger);
 
-// TODO: check how typescript modules are loaded
 export default GTLogger.logger;

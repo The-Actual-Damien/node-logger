@@ -12,8 +12,8 @@ function getFreeMemoryMB() {
 const memoryFormat = winston.format((info) => {
     info = {
         ...info,
-        metadata: {
-            ...info.metadata,
+        logMetadata: {
+            ...info.logMetadata,
             memory: {
                 usedMBs: getMemoryUsageMB(),
                 freeMBs: getFreeMemoryMB(),
