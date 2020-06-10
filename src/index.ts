@@ -101,7 +101,10 @@ function getLoggerOptions(config?: Config): winston.LoggerOptions {
     return options;
 }
 
-// A singleton that manages the winston logger instance.
+/**
+ * A singleton that manages the winston logger instance.
+ * Only testcases should access it directly.
+ */
 export class GTLogger {
     private static _logger?: winston.Logger;
 
@@ -126,6 +129,9 @@ export class GTLogger {
     }
 }
 
+/**
+ * Initialize the logger.
+ */
 export const init = GTLogger.init.bind(GTLogger);
 
 export default GTLogger.logger;
