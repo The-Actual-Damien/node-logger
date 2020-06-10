@@ -123,5 +123,7 @@ export class GTLogger {
     }
 }
 
+export const init = GTLogger.init;
+
 // TODO: check how typescript modules are loaded
 export default GTLogger.logger;

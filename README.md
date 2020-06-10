@@ -28,9 +28,9 @@ The prod logging can be updated as well but the change must not break current pr
 Screenshots are in a section further below.
 ```ts
 /// server.ts
-import log, { GTLogger } from '@goodtimeio/node-logger';
+import log, { init } from '@goodtimeio/node-logger';
 
-GTLogger.init({
+init({
     environment: 'prod',
     name: 'test',
     additionalInfo: () => ({
@@ -76,9 +76,9 @@ log.debug("debug");
 ## Approach 1: Specify scrubber function
 The scrubber function will run on every message about to logged.
 ```ts
-import log, { GTLogger } from '@goodtimeio/node-logger';
+import log, { init } from '@goodtimeio/node-logger';
 
-GTLogger.init({
+init({
     environment: 'prod',
     name: 'test',
     scrubber: ({ level, message, ...rest }) => {
