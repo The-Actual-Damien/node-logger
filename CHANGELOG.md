@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/GoodTimeio/node-logger/compare/v1.3.0...v1.4.0) (2020-06-10)
+
+
+### Features
+
+* swap timestamp order ([e56910f](https://github.com/GoodTimeio/node-logger/commit/e56910fda1c11e9af7e34dc847557be025c0baa9))
+
 # [1.3.0](https://github.com/GoodTimeio/node-logger/compare/v1.2.2...v1.3.0) (2020-06-10)
 
 
