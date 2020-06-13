@@ -69,6 +69,12 @@ log.verbose("verbose");
 log.debug("debug");
 ```
 
+# Access to winston
+Winston is exported from `node-logger`. Import it via:
+```ts
+import { winston } from '@goodtimeio/node-logger';
+```
+
 # Scrubbing Sensitive Fields
 
 ## Approach 1: Specify scrubber function

@@ -1,4 +1,4 @@
-import * as winston from 'winston';
+export import winston = require('winston');
 
 import attachDevLogFormat from '@src/formats/dev-logs';
 import attachMemoryUsageInfo from '@src/formats/memory';
