@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/GoodTimeio/node-logger/compare/v1.5.0...v1.5.1) (2020-06-13)
+
+
+### Bug Fixes
+
+* scrub even the fields specified in the scrubber frunction ([f9b1279](https://github.com/GoodTimeio/node-logger/commit/f9b1279eee4924ea6e64c36b37f2c3a3ce3bd796))
+
 # [1.5.0](https://github.com/GoodTimeio/node-logger/compare/v1.4.0...v1.5.0) (2020-06-13)
 
 
