@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/GoodTimeio/node-logger/compare/v1.4.0...v1.5.0) (2020-06-13)
+
+
+### Features
+
+* export winston from node-logger ([1d101c6](https://github.com/GoodTimeio/node-logger/commit/1d101c6b0fc3e98424f5f4bd64f23b713063974d))
+
 # [1.4.0](https://github.com/GoodTimeio/node-logger/compare/v1.3.0...v1.4.0) (2020-06-10)
 
 
