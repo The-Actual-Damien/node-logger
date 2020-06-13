@@ -26,7 +26,8 @@ const scrubFormat = winston.format((info, scrubber) => {
         // We will not allow the scrubber to modify the displayed log level.
         level: info[LEVEL],
     };
-    const scrubbedOutput = redact(scrubber(info), info.scrub);
+    const scrubbedRes = scrubber(info);
+    const scrubbedOutput = redact(scrubbedRes, [...(info.scrub || []), ...(scrubbedRes.scrub || [])]);
     return {
         message: '',
         ...scrubbedOutput,

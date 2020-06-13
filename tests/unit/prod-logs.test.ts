@@ -237,4 +237,38 @@ describe('when logging while configuring the logger in production mode', () => {
         });
         file.removeCallback();
     });
+
+    it('scrubs fields specified in the scrubber function', async () => {
+        const file = tmp.fileSync();
+        GTLogger.reset();
+        GTLogger.init({
+            name: 'prod-test',
+            environment: 'prod',
+            transports: [
+                new winston.transports.File({
+                    filename: file.name,
+                }),
+            ],
+            scrubber: ({ level, message, ...rest }) => {
+                return {
+                    level,
+                    message,
+                    scrub: ['authorizationHeader'],
+                    ...rest,
+                };
+            },
+        });
+        const logger = GTLogger.logger;
+        logger.info('test', { authorizationHeader: 'scrub me' });
+        logger.end();
+
+        await delay(10);
+
+        const contents = fs.readFileSync(file.name);
+        const log = JSON.parse(contents.toString());
+        expect(log.level).to.eql('info');
+        expect(log.message).to.eql('test');
+        expect(log.authorizationHeader).to.eql('[REDACTED]');
+        file.removeCallback();
+    });
 });

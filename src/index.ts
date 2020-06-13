@@ -8,6 +8,7 @@ import attachStackTrace from '@src/formats/stack-trace';
 interface Info {
     log: string;
     message: string;
+    scrub?: string[];
     [rest: string]: unknown;
 }
 
