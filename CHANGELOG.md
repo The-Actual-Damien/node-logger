@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/GoodTimeio/node-logger/compare/v1.5.1...v1.5.2) (2020-06-25)
+
+
+### Bug Fixes
+
+* types ([122f0d0](https://github.com/GoodTimeio/node-logger/commit/122f0d01974cf73a958cd3c9c06fe7f817de2188))
+
 ## [1.5.1](https://github.com/GoodTimeio/node-logger/compare/v1.5.0...v1.5.1) (2020-06-13)
 
 
