@@ -6,7 +6,7 @@ import attachScrubber from '@src/formats/scrubber';
 import attachStackTrace from '@src/formats/stack-trace';
 
 interface Info {
-    log: string;
+    level: 'info' | 'error' | 'debug' | 'warn' | 'silly';
     message: string;
     scrub?: string[];
     [rest: string]: unknown;
