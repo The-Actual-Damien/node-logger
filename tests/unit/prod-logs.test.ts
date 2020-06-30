@@ -6,7 +6,7 @@ import fs from 'fs';
 import tmp from 'tmp';
 
 describe('when logging while configuring the logger in production mode', () => {
-    it('contains error message and level', async () => {
+    it('contains message and level', async () => {
         const file = tmp.fileSync();
         GTLogger.reset();
         GTLogger.init({
@@ -99,6 +99,11 @@ describe('when logging while configuring the logger in production mode', () => {
         GTLogger.reset();
         GTLogger.init({
             name: 'prod-test',
+            additionalInfo: () => {
+                return {
+                    hello: 'world',
+                };
+            },
             environment: 'prod',
             transports: [
                 new winston.transports.File({
@@ -116,6 +121,40 @@ describe('when logging while configuring the logger in production mode', () => {
         const log = JSON.parse(contents.toString());
         expect(log.level).to.eql('error');
         expect(log.message).to.eql('hey');
+        expect(log.logMetadata.hello).to.eql('world');
+        expect(log.stack.includes('Error: hey\n')).to.eql(true);
+        expect(log.stack.includes('/node-logger/tests/unit/prod-logs.test.ts:')).to.eql(true);
+        file.removeCallback();
+    });
+
+    it('prints stack traces when an error is passed, second pattern', async () => {
+        const file = tmp.fileSync();
+        GTLogger.reset();
+        GTLogger.init({
+            name: 'prod-test',
+            additionalInfo: () => {
+                return {
+                    hello: 'world',
+                };
+            },
+            environment: 'prod',
+            transports: [
+                new winston.transports.File({
+                    filename: file.name,
+                }),
+            ],
+        });
+        const logger = GTLogger.logger;
+        logger.error('some error ', new Error('hey'));
+        logger.end();
+
+        await delay(10);
+
+        const contents = fs.readFileSync(file.name);
+        const log = JSON.parse(contents.toString());
+        expect(log.level).to.eql('error');
+        expect(log.message).to.eql('some error hey');
+        expect(log.logMetadata.hello).to.eql('world');
         expect(log.stack.includes('Error: hey\n')).to.eql(true);
         expect(log.stack.includes('/node-logger/tests/unit/prod-logs.test.ts:')).to.eql(true);
         file.removeCallback();
@@ -303,9 +342,13 @@ describe('when logging while configuring the logger in production mode', () => {
             },
         });
         const logger = GTLogger.logger;
-        logger.info('test', {
+        logger.error('some error', {
+            stack: new Error('hello').stack,
             fieldRedact1: 'test1',
             fieldRedact2: 'test2',
+            config: {
+                some: 'config',
+            },
         });
         logger.end();
 
@@ -313,13 +356,14 @@ describe('when logging while configuring the logger in production mode', () => {
 
         const contents = fs.readFileSync(file.name);
         const log = JSON.parse(contents.toString());
-        expect(log.level).to.eql('info');
-        expect(log.message).to.eql('test');
+        expect(log.level).to.eql('error');
+        expect(log.message).to.eql('some error');
         expect(log.label).to.eql('prod-test');
         expect(log.fieldRedact1).to.eql('[REDACTED]');
         expect(log.fieldRedact2).to.eql('[REDACTED]');
         expect(log.somedata.field1).to.eql('test1');
         expect(log.somedata.field2).to.eql('test2');
+        expect(log.logMetadata.hello).to.eql('world');
         file.removeCallback();
     });
 });
