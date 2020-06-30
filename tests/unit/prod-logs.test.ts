@@ -271,4 +271,55 @@ describe('when logging while configuring the logger in production mode', () => {
         expect(log.authorizationHeader).to.eql('[REDACTED]');
         file.removeCallback();
     });
+
+    it('logs extra fields', async () => {
+        const file = tmp.fileSync();
+        GTLogger.reset();
+        GTLogger.init({
+            name: 'prod-test',
+            environment: 'prod',
+            transports: [
+                new winston.transports.File({
+                    filename: file.name,
+                }),
+            ],
+            additionalInfo: () => {
+                return {
+                    hello: 'world',
+                };
+            },
+            scrubber: ({ level, message, ...rest }) => {
+                const ret = {
+                    level,
+                    message,
+                    ...rest,
+                    somedata: {
+                        field1: rest.fieldRedact1,
+                        field2: rest.fieldRedact2,
+                    },
+                    scrub: ['fieldRedact1', 'fieldRedact2'],
+                };
+                return ret;
+            },
+        });
+        const logger = GTLogger.logger;
+        logger.info('test', {
+            fieldRedact1: 'test1',
+            fieldRedact2: 'test2',
+        });
+        logger.end();
+
+        await delay(10);
+
+        const contents = fs.readFileSync(file.name);
+        const log = JSON.parse(contents.toString());
+        expect(log.level).to.eql('info');
+        expect(log.message).to.eql('test');
+        expect(log.label).to.eql('prod-test');
+        expect(log.fieldRedact1).to.eql('[REDACTED]');
+        expect(log.fieldRedact2).to.eql('[REDACTED]');
+        expect(log.somedata.field1).to.eql('test1');
+        expect(log.somedata.field2).to.eql('test2');
+        file.removeCallback();
+    });
 });
