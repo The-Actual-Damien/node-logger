@@ -70,9 +70,7 @@ function getLoggerOptions(config?: Config): winston.LoggerOptions {
 
         // Our official logging format.
         formats.push(winston.format.json());
-    }
-
-    if (config?.environment === 'dev') {
+    } else if (config?.environment === 'dev') {
         // Heroku adds a timestamp to our logs in prod,
         // but it's convenient to also have a timestamp in dev.
         formats.push(winston.format.timestamp());
@@ -90,6 +88,9 @@ function getLoggerOptions(config?: Config): winston.LoggerOptions {
 
         // Color outputs in dev for convenience.
         formats.push(winston.format.colorize({ all: true }));
+    } else {
+        // if logger isn't initialized
+        formats.push(winston.format.json());
     }
 
     const options: winston.LoggerOptions = {
