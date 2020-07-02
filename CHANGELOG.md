@@ -1,3 +1,10 @@
+## [1.5.3](https://github.com/GoodTimeio/node-logger/compare/v1.5.2...v1.5.3) (2020-07-02)
+
+
+### Bug Fixes
+
+* not logging before initialization ([f704430](https://github.com/GoodTimeio/node-logger/commit/f7044302f1d7c326766d9a1bec488e54735d9c46))
+
 ## [1.5.2](https://github.com/GoodTimeio/node-logger/compare/v1.5.1...v1.5.2) (2020-06-25)
 
 
