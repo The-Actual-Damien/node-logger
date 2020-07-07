@@ -1,6 +1,6 @@
 {
     "name": "@goodtimeio/node-logger",
-    "version": "1.5.3",
+    "version": "1.6.0",
     "description": "Package to help with logging in node",
     "license": "MIT",
     "main": "dist/index.js",

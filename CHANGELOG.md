@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/GoodTimeio/node-logger/compare/v1.5.3...v1.6.0) (2020-07-07)
+
+
+### Features
+
+* added optional sentry logger ([1c898a1](https://github.com/GoodTimeio/node-logger/commit/1c898a1c57b628dd86d126c8798ba6e48e407968))
+
 ## [1.5.3](https://github.com/GoodTimeio/node-logger/compare/v1.5.2...v1.5.3) (2020-07-02)
 
 
