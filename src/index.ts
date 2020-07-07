@@ -1,5 +1,6 @@
 export import winston = require('winston');
 
+import { SentryConfig, buildSentryTransport } from '@src/transports/sentry';
 import attachDevLogFormat from '@src/formats/dev-logs';
 import attachMemoryUsageInfo from '@src/formats/memory';
 import attachScrubber from '@src/formats/scrubber';
@@ -35,12 +36,21 @@ export interface Config extends Pick<winston.LoggerOptions, 'silent' | 'transpor
      * Or you might want to scrub all the emails.
      */
     scrubber?: (input: Info) => Info;
+
+    /**
+     * Optional configuration for sentry logging on errors.
+     * This config tells winston what project to send error logs to within Sentry.
+     * Default logging is on error.
+     */
+    sentry?: SentryConfig;
 }
 
 const id = <T>(x: T): T => x;
 
 // generate the winston configuration based on the config
 function getLoggerOptions(config?: Config): winston.LoggerOptions {
+    const transports = [new winston.transports.Console({ level: 'debug' })];
+
     const formats = [
         // Enable stack traces if an Error object was logged.
         winston.format.errors({ stack: true }),
@@ -93,11 +103,19 @@ function getLoggerOptions(config?: Config): winston.LoggerOptions {
         formats.push(winston.format.json());
     }
 
+    if (config?.sentry) {
+        try {
+            transports.push(buildSentryTransport(config.sentry));
+        } catch (err) {
+            console.warn(`Error attaching sentry transport: ${err.getMessage()}`);
+        }
+    }
+
     const options: winston.LoggerOptions = {
         format: winston.format.combine(...formats),
         // In prod, we use a Heroku console drain, so we need to output to console.
         // In dev, we output to console for convenience.
-        transports: [new winston.transports.Console({ level: 'debug' })],
+        transports: transports,
         ...config,
     };
     return options;
@@ -105,7 +123,7 @@ function getLoggerOptions(config?: Config): winston.LoggerOptions {
 
 /**
  * A singleton that manages the winston logger instance.
- * Only testcases should access it directly.
+ * Only test cases should access it directly.
  */
 export class GTLogger {
     private static _logger?: winston.Logger;
