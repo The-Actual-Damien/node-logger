@@ -12,9 +12,8 @@ Some features include:
     * Specify fields you want to be scrubbed on a per-message basis
     * [See examples below](https://github.com/GoodTimeio/node-logger#scrubbing-sensitive-fields)!
 * All other features that [winston](https://www.npmjs.com/package/winston) has like [profiling](https://www.npmjs.com/package/winston#profiling)
-
-Some features that are coming in the future:
 * Optional Sentry transport for errors
+    * Have your errors appear in Slack #alerts or #errors channel!
 
 # Feedback
 If you have any suggestions or changes that you'd like, please open an Issue.
