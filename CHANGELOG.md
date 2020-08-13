@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/GoodTimeio/node-logger/compare/v1.6.0...v1.7.0) (2020-08-13)
+
+
+### Features
+
+* **config:** allow log level to be set in config ([823cdd4](https://github.com/GoodTimeio/node-logger/commit/823cdd495e4000eda4e614393fdb4e591ae033be))
+
 # [1.6.0](https://github.com/GoodTimeio/node-logger/compare/v1.5.3...v1.6.0) (2020-07-07)
 
 
