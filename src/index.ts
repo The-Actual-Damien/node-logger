@@ -7,13 +7,13 @@ import attachScrubber from '@src/formats/scrubber';
 import attachStackTrace from '@src/formats/stack-trace';
 
 interface Info {
-    level: 'info' | 'error' | 'debug' | 'warn' | 'silly';
+    level: 'error' | 'warn' | 'info' | 'verbose' | 'debug' | 'silly';
     message: string;
     scrub?: string[];
     [rest: string]: unknown;
 }
 
-export interface Config extends Pick<winston.LoggerOptions, 'silent' | 'transports'> {
+export interface Config extends Pick<winston.LoggerOptions, 'silent' | 'transports' | 'level'> {
     /**
      * If environment is `dev`, we will prettify the output.
      */
