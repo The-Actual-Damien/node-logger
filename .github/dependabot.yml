@@ -7,8 +7,7 @@ updates:
       interval: "daily"
       time: "21:00"
     reviewers:
-      - "octocat"
-      - "yoloVoe"
+      - "GoodTimeio/api"
     commit-message:
       prefix: "chore(npm): "
 
@@ -19,7 +18,6 @@ updates:
       interval: "daily"
       time: "21:00"
     reviewers:
-      - "octocat"
       - "GoodTimeio/api"
     commit-message:
       prefix: "chore(ci): "
