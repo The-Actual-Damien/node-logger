@@ -2,7 +2,6 @@ version: 2
 updates:
   # Enable version updates for npm
   - package-ecosystem: "npm"
-    directory: "GoodTimeio/api"
     schedule:
       interval: "daily"
       time: "21:00"
