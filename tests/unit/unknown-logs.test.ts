@@ -21,7 +21,7 @@ describe('when logging without configuring the logger', () => {
         logger.info('some log', { whats: 'up' });
         logger.end();
 
-        await delay(10);
+        await delay(1000);
 
         const contents = fs.readFileSync(file.name);
         const log = JSON.parse(contents.toString());
