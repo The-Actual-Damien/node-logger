@@ -6,8 +6,6 @@ updates:
     schedule:
       interval: "daily"
       time: "21:00"
-    reviewers:
-      - "GoodTimeio/api"
     commit-message:
       prefix: "chore(npm): "
 
@@ -17,7 +15,5 @@ updates:
     schedule:
       interval: "daily"
       time: "21:00"
-    reviewers:
-      - "GoodTimeio/api"
     commit-message:
       prefix: "chore(ci): "
