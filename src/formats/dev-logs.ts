@@ -3,7 +3,7 @@ import * as winston from 'winston';
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const devLogFormat = () => {
     return winston.format.printf((info) => {
-        const obj = {
+        const obj: Partial<typeof info> = {
             ...info,
         };
 
