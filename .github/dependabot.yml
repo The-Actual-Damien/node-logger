@@ -1,0 +1,25 @@
+version: 2
+updates:
+  # Enable version updates for npm
+  - package-ecosystem: "npm"
+    directory: "GoodTimeio/api"
+    schedule:
+      interval: "daily"
+      time: "21:00"
+    reviewers:
+      - "octocat"
+      - "yoloVoe"
+    commit-message:
+      prefix: "chore(npm): "
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "21:00"
+    reviewers:
+      - "octocat"
+      - "GoodTimeio/api"
+    commit-message:
+      prefix: "chore(ci): "
