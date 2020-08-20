@@ -24,7 +24,7 @@ describe('when logging while configuring the logger in dev mode', () => {
         });
         logger.end();
 
-        await delay(10);
+        await delay(1000);
 
         const contents = fs.readFileSync(file.name).toString();
 

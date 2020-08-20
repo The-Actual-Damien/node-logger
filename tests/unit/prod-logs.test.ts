@@ -22,7 +22,7 @@ describe('when logging while configuring the logger in production mode', () => {
         logger.info('test');
         logger.end();
 
-        await delay(10);
+        await delay(1000);
 
         const contents = fs.readFileSync(file.name);
         const log = JSON.parse(contents.toString());
@@ -48,7 +48,7 @@ describe('when logging while configuring the logger in production mode', () => {
         logger.info('test, 1');
         logger.end();
 
-        await delay(10);
+        await delay(1000);
 
         const contents = fs.readFileSync(file.name);
         const log = JSON.parse(contents.toString());
@@ -82,7 +82,7 @@ describe('when logging while configuring the logger in production mode', () => {
         logger.info('test, 2');
         logger.end();
 
-        await delay(10);
+        await delay(1000);
 
         const contents = fs.readFileSync(file.name);
         const lines = contents.toString().split('\n');
@@ -115,7 +115,7 @@ describe('when logging while configuring the logger in production mode', () => {
         logger.error(new Error('hey'));
         logger.end();
 
-        await delay(10);
+        await delay(1000);
 
         const contents = fs.readFileSync(file.name);
         const log = JSON.parse(contents.toString());
@@ -148,7 +148,7 @@ describe('when logging while configuring the logger in production mode', () => {
         logger.error('some error ', new Error('hey'));
         logger.end();
 
-        await delay(10);
+        await delay(1000);
 
         const contents = fs.readFileSync(file.name);
         const log = JSON.parse(contents.toString());
@@ -176,7 +176,7 @@ describe('when logging while configuring the logger in production mode', () => {
         logger.error('not an error object');
         logger.end();
 
-        await delay(10);
+        await delay(1000);
 
         const contents = fs.readFileSync(file.name);
         const log = JSON.parse(contents.toString());
@@ -216,7 +216,7 @@ describe('when logging while configuring the logger in production mode', () => {
         logger.info('test', { authorizationHeader: 'scrub me' });
         logger.end();
 
-        await delay(10);
+        await delay(1000);
 
         const contents = fs.readFileSync(file.name);
         const log = JSON.parse(contents.toString());
@@ -258,7 +258,7 @@ describe('when logging while configuring the logger in production mode', () => {
         });
         logger.end();
 
-        await delay(10);
+        await delay(1000);
 
         const contents = fs.readFileSync(file.name);
         const log = JSON.parse(contents.toString());
@@ -301,7 +301,7 @@ describe('when logging while configuring the logger in production mode', () => {
         logger.info('test', { authorizationHeader: 'scrub me' });
         logger.end();
 
-        await delay(10);
+        await delay(1000);
 
         const contents = fs.readFileSync(file.name);
         const log = JSON.parse(contents.toString());
@@ -352,7 +352,7 @@ describe('when logging while configuring the logger in production mode', () => {
         });
         logger.end();
 
-        await delay(10);
+        await delay(1000);
 
         const contents = fs.readFileSync(file.name);
         const log = JSON.parse(contents.toString());
