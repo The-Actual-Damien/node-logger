@@ -49,7 +49,7 @@ const id = <T>(x: T): T => x;
 
 // generate the winston configuration based on the config
 function getLoggerOptions(config?: Config): winston.LoggerOptions {
-    const transports = [new winston.transports.Console({ level: 'debug' })];
+    const transports = [new winston.transports.Console()];
 
     const formats = [
         // Enable stack traces if an Error object was logged.
