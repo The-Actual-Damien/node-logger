@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/GoodTimeio/node-logger/compare/v1.7.0...v1.7.1) (2020-10-15)
+
+
+### Bug Fixes
+
+* default level should be inherited from config rather than debug ([37d92cf](https://github.com/GoodTimeio/node-logger/commit/37d92cf9beab01f5d6c11033d0051b09a7dc9647))
+
 # [1.7.0](https://github.com/GoodTimeio/node-logger/compare/v1.6.0...v1.7.0) (2020-08-13)
 
 
