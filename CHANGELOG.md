@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/GoodTimeio/node-logger/compare/v1.7.1...v1.8.0) (2020-10-20)
+
+
+### Features
+
+* do not log free mem, only used mem ([afc5eaa](https://github.com/GoodTimeio/node-logger/commit/afc5eaa42c5a71d1c6b4a5bff96108c3bfef3544))
+
 ## [1.7.1](https://github.com/GoodTimeio/node-logger/compare/v1.7.0...v1.7.1) (2020-10-15)
 
 
