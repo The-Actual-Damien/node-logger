@@ -53,7 +53,6 @@ describe('when logging while configuring the logger in production mode', () => {
         const contents = fs.readFileSync(file.name);
         const log = JSON.parse(contents.toString());
         expect(parseInt(log?.logMetadata?.memory?.usedMBs, 10)).to.be.greaterThan(0);
-        expect(parseInt(log?.logMetadata?.memory?.freeMBs, 10)).to.be.greaterThan(0);
         file.removeCallback();
     });
 
