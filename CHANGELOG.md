@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/GoodTimeio/node-logger/compare/v1.8.0...v1.8.1) (2020-11-22)
+
+
+### Bug Fixes
+
+* testcases were broken after noUncheckedIndexAccess ([3540245](https://github.com/GoodTimeio/node-logger/commit/35402453339994828906990b84562960b1d3d835))
+
 # [1.8.0](https://github.com/GoodTimeio/node-logger/compare/v1.7.1...v1.8.0) (2020-10-20)
 
 
