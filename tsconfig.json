@@ -8,6 +8,7 @@
         "strict": true,
         "strictNullChecks": true,
         "sourceMap": true,
+        "noUncheckedIndexedAccess": true,
         "paths": {
             "@src/*": ["src/*"]
         },
