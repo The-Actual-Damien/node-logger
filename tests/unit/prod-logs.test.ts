@@ -88,8 +88,8 @@ describe('when logging while configuring the logger in production mode', () => {
         expect(lines).to.have.lengthOf(3);
         expect(lines[2]).to.eql('');
 
-        expect(JSON.parse(lines[0])?.logMetadata.requestId).to.eql('1');
-        expect(JSON.parse(lines[1])?.logMetadata.requestId).to.eql('2');
+        expect(JSON.parse(lines[0]!)?.logMetadata.requestId).to.eql('1');
+        expect(JSON.parse(lines[1]!)?.logMetadata.requestId).to.eql('2');
         file.removeCallback();
     });
 
