@@ -1,6 +1,5 @@
 export import winston = require('winston');
 
-import { SentryConfig, buildSentryTransport } from '@src/transports/sentry';
 import attachDevLogFormat from '@src/formats/dev-logs';
 import attachMemoryUsageInfo from '@src/formats/memory';
 import attachScrubber from '@src/formats/scrubber';
@@ -36,13 +35,6 @@ export interface Config extends Pick<winston.LoggerOptions, 'silent' | 'transpor
      * Or you might want to scrub all the emails.
      */
     scrubber?: (input: Info) => Info;
-
-    /**
-     * Optional configuration for sentry logging on errors.
-     * This config tells winston what project to send error logs to within Sentry.
-     * Default logging is on error.
-     */
-    sentry?: SentryConfig;
 }
 
 const id = <T>(x: T): T => x;
@@ -101,14 +93,6 @@ function getLoggerOptions(config?: Config): winston.LoggerOptions {
     } else {
         // if logger isn't initialized
         formats.push(winston.format.json());
-    }
-
-    if (config?.sentry) {
-        try {
-            transports.push(buildSentryTransport(config.sentry));
-        } catch (err) {
-            console.warn(`Error attaching sentry transport: ${err.getMessage()}`);
-        }
     }
 
     const options: winston.LoggerOptions = {
