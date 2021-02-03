@@ -1,3 +1,10 @@
+## [1.8.2](https://github.com/GoodTimeio/node-logger/compare/v1.8.1...v1.8.2) (2021-02-03)
+
+
+### Bug Fixes
+
+* **remove sentry:** removed setry, winston-sentry and all references ([da7ef3d](https://github.com/GoodTimeio/node-logger/commit/da7ef3d881f56bdd2f76f45705d322a70131c089))
+
 ## [1.8.1](https://github.com/GoodTimeio/node-logger/compare/v1.8.0...v1.8.1) (2020-11-22)
 
 
