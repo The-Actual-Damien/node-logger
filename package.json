@@ -74,7 +74,7 @@
         "prettier": "2.0.5",
         "prettier-eslint": "10.1.1",
         "semantic-release": "17.2.3",
-        "sinon": "9.2.0",
+        "sinon": "9.2.4",
         "source-map-support": "0.5.19",
         "tmp": "^0.2.1",
         "ts-node": "9.0.0",
